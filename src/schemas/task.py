@@ -1,44 +1,57 @@
 from dataclasses import dataclass
 
 from fastapi import Query
-from pydantic import BaseModel, field_validator, UUID4
+from pydantic import BaseModel, UUID4, Field, field_validator
 
 from src.models.enums import task_status_enum
 from src.schemas.filter import TypeFilter
+from src.schemas.response import BaseCreateResponse, BaseResponse
 from src.utils.constans import TITLE_TOO_SHORT_MSG, INVALID_STATUS_MSG
 
 ALLOWED_STATUSES = set(task_status_enum.enums)
 
 
+class TaskID(BaseModel):
+    id: UUID4
+
+
 class TaskCreateRequest(BaseModel):
-    title: str
-    description: str | None
+    title: str = Field(..., min_length=3)
+    description: str | None = None
     status: str
     author_id: UUID4
-    assignee_id: UUID4 | None
+    assignee_id: UUID4 | None = None
 
     @field_validator("title")
     @classmethod
-    def validate_title(cls, v):
+    def validate_title(cls, v: str) -> str:
         if len(v) < 3:
             raise ValueError(TITLE_TOO_SHORT_MSG)
         return v
 
     @field_validator("status")
     @classmethod
-    def validate_status(cls, v):
+    def validate_status(cls, v: str) -> str:
         if v not in ALLOWED_STATUSES:
             raise ValueError(INVALID_STATUS_MSG)
         return v
 
 
 class TaskUpdateRequest(BaseModel):
-    title: str | None
-    description: str | None
-    status: str | None
+    title: str | None = Field(default=None, min_length=3)
+    description: str | None = None
+    status: str | None = None
+    assignee_id: UUID4 | None = None
+
+    @field_validator("status")
+    @classmethod
+    def validate_status(cls, v: str | None) -> str | None:
+        if v is not None and v not in ALLOWED_STATUSES:
+            raise ValueError(INVALID_STATUS_MSG)
+        return v
 
 
-class TaskResponse(BaseModel):
+class TaskDB(TaskID, TaskCreateRequest):
     id: UUID4
     title: str
     description: str | None
@@ -48,6 +61,18 @@ class TaskResponse(BaseModel):
 
     class Config:
         from_attributes = True
+
+
+class CreateTaskResponse(BaseCreateResponse):
+    payload: TaskDB
+
+
+class TaskResponse(BaseResponse):
+    payload: TaskDB
+
+
+class TasksListResponse(BaseResponse):
+    payload: list[TaskDB]
 
 
 @dataclass

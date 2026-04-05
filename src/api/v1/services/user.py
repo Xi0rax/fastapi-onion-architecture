@@ -2,7 +2,7 @@ from uuid import UUID
 from typing import Sequence
 
 from src.utils.service import BaseService
-from src.schemas.user import UserFilters
+from src.schemas.user import UserFilters, UserDB
 from src.models import UserModel
 
 

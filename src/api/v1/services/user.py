@@ -1,47 +1,29 @@
-from typing import TYPE_CHECKING
+from uuid import UUID
+from typing import Sequence
 
-from pydantic import UUID4
-
-from src.schemas.user import CreateUserRequest, UpdateUserRequest, UserDB, UserFilters
-from src.utils.constans import USER_NOT_FOUND_MSG
-from src.utils.service import BaseService, transaction_mode
-
-if TYPE_CHECKING:
-    from collections.abc import Sequence
-
-    from src.models import UserModel
+from src.utils.service import BaseService
+from src.schemas.user import UserFilters
+from src.models import UserModel
 
 
 class UserService(BaseService):
-    _repo: str = 'user'
+    _repo = "user"
 
-    @transaction_mode
-    async def create_user(self, user: CreateUserRequest) -> UserDB:
-        """Create user."""
-        created_user: UserModel = await self.uow.user.add_one_and_get_obj(**user.model_dump())
-        return created_user.to_schema()
+    async def create_user(self, data: dict) -> UserModel:
+        return await self.add_one_and_get_obj(**data)
 
-    @transaction_mode
-    async def get_user_by_id(self, user_id: UUID4) -> UserDB:
-        """Get user by ID."""
-        user: UserModel | None = await self.uow.user.get_by_filter_one_or_none(id=user_id)
-        self.check_existence(obj=user, details=USER_NOT_FOUND_MSG)
-        return user.to_schema()
+    async def get_user(self, user_id: UUID) -> UserModel:
+        user = await self.get_by_filter_one_or_none(id=user_id)
+        self.check_existence(user, "User not found")
+        return user
 
-    @transaction_mode
-    async def update_user(self, user_id: UUID4, user: UpdateUserRequest) -> UserDB:
-        """Update user by ID."""
-        user: UserModel | None = await self.uow.user.update_one_by_id(obj_id=user_id, **user.model_dump())
-        self.check_existence(obj=user, details=USER_NOT_FOUND_MSG)
-        return user.to_schema()
+    async def get_users(self, filters: UserFilters) -> Sequence[UserModel]:
+        return await self.uow.user.get_users_by_filter(filters)
 
-    @transaction_mode
-    async def delete_user(self, user_id: UUID4) -> None:
-        """Delete user by ID."""
-        await self.uow.user.delete_by_filter(id=user_id)
+    async def update_user(self, user_id: UUID, data: dict) -> UserModel:
+        user = await self.update_one_by_id(user_id, **data)
+        self.check_existence(user, "User not found")
+        return user
 
-    @transaction_mode
-    async def get_users_by_filters(self, filters: UserFilters) -> list[UserDB]:
-        """Get users by filter."""
-        users: Sequence[UserModel] = await self.uow.user.get_users_by_filter(filters)
-        return [user.to_schema() for user in users]
+    async def delete_user(self, user_id: UUID) -> None:
+        await self.delete_by_ids(user_id)

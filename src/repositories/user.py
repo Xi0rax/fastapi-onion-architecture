@@ -1,6 +1,6 @@
 from collections.abc import Sequence
-
-from sqlalchemy import Result, select
+from sqlalchemy import select
+from sqlalchemy.engine import Result
 
 from src.models import UserModel
 from src.schemas.user import UserFilters
@@ -11,20 +11,22 @@ class UserRepository(SqlAlchemyRepository[UserModel]):
     _model = UserModel
 
     async def get_users_by_filter(self, filters: UserFilters) -> Sequence[UserModel]:
-        """Find all users by filters."""
         query = select(self._model)
 
         if filters.ids:
             query = query.where(self._model.id.in_(filters.ids))
 
-        if filters.first_name:
-            query = query.where(self._model.first_name.in_(filters.first_name))
+        if filters.full_name:
+            query = query.where(self._model.full_name.in_(filters.full_name))
 
-        if filters.last_name:
-            query = query.where(self._model.last_name.in_(filters.last_name))
+        if filters.email:
+            query = query.where(self._model.email.in_(filters.email))
 
-        if filters.middle_name:
-            query = query.where(self._model.middle_name.in_(filters.middle_name))
+        if filters.like:
+            query = query.where(self._model.full_name.ilike(f"%{filters.like}%"))
+
+        if filters.limit:
+            query = query.limit(filters.limit).offset(filters.offset)
 
         res: Result = await self._session.execute(query)
         return res.scalars().all()

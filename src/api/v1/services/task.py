@@ -4,7 +4,7 @@ from uuid import UUID
 from src.models import TaskModel
 from src.schemas.task import TaskFilters
 from src.utils.constans import TASK_NOT_FOUND_MSG
-from src.utils.service import BaseService
+from src.utils.service import BaseService, transaction_mode
 
 
 class TaskService(BaseService):
@@ -18,6 +18,7 @@ class TaskService(BaseService):
         self.check_existence(task, TASK_NOT_FOUND_MSG)
         return task
 
+    @transaction_mode
     async def get_tasks(self, filters: TaskFilters) -> Sequence[TaskModel]:
         return await self.uow.task.get_tasks_by_filter(filters)
 

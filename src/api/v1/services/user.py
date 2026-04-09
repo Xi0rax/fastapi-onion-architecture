@@ -1,9 +1,10 @@
-from uuid import UUID
 from typing import Sequence
+from uuid import UUID
 
-from src.utils.service import BaseService
-from src.schemas.user import UserFilters, UserDB
 from src.models import UserModel
+from src.schemas.user import UserFilters
+from src.utils.service import BaseService
+from utils.service import transaction_mode
 
 
 class UserService(BaseService):
@@ -17,6 +18,7 @@ class UserService(BaseService):
         self.check_existence(user, "User not found")
         return user
 
+    @transaction_mode
     async def get_users(self, filters: UserFilters) -> Sequence[UserModel]:
         return await self.uow.user.get_users_by_filter(filters)
 

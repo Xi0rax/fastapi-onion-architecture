@@ -12,18 +12,22 @@ class UserID(BaseModel):
 
 
 class CreateUserRequest(BaseModel):
-    first_name: str = Field(max_length=50)
-    last_name: str = Field(max_length=50)
-    middle_name: str | None = Field(max_length=50, default=None)
-    company_id: UUID4
+    full_name: str = Field(max_length=100)
+    email: str = Field(max_length=120)
 
 
-class UpdateUserRequest(CreateUserRequest):
-    pass
+class UpdateUserRequest(BaseModel):
+    full_name: str | None = None
+    email: str | None = None
 
 
 class UserDB(UserID, CreateUserRequest):
-    pass
+    id: UUID4
+    full_name: str
+    email: str
+
+    class Config:
+        from_attributes = True
 
 
 class CreateUserResponse(BaseCreateResponse):
@@ -41,6 +45,5 @@ class UsersListResponse(BaseResponse):
 @dataclass
 class UserFilters(TypeFilter):
     ids: list[UUID4] | None = Query(None)
-    first_name: list[str] | None = Query(None)
-    last_name: list[str] | None = Query(None)
-    middle_name: list[str] | None = Query(None)
+    full_name: list[str] | None = Query(None)
+    email: list[str] | None = Query(None)

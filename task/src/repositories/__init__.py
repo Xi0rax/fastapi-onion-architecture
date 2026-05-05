@@ -3,5 +3,5 @@ __all__ = [
     'UserRepository',
 ]
 
-from src.repositories.task import TaskRepository
-from src.repositories.user import UserRepository
+from task.src.repositories.task import TaskRepository
+from task.src.repositories.user import UserRepository

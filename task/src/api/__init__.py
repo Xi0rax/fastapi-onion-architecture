@@ -10,10 +10,10 @@ from sqlalchemy import text
 from sqlalchemy.ext.asyncio import AsyncSession
 from starlette.status import HTTP_200_OK, HTTP_400_BAD_REQUEST
 
-from src.api.v1.routers import v1_company_router, v1_user_router
-from src.database.db import get_async_session
-from src.metadata import ERRORS_MAP
-from src.schemas.response import BaseResponse
+from task.src.api.v1.routers import v1_company_router, v1_user_router
+from task.src.database.db import get_async_session
+from task.src.metadata import ERRORS_MAP
+from task.src.schemas.response import BaseResponse
 
 router = APIRouter()
 router.include_router(v1_user_router, prefix='/v1', tags=['User | v1'])
@@ -29,6 +29,7 @@ async def health_check(
         session: AsyncSession = Depends(get_async_session),
 ) -> BaseResponse:
     """Check api external connection."""
+
     async def check_service(service: str) -> None:
         try:
             if service == 'postgres':

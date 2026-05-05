@@ -1,7 +1,7 @@
 import pytest
 from uuid import uuid4
 
-from src.repositories.task import TaskRepository
+from task.src.repositories.task import TaskRepository
 
 
 @pytest.mark.asyncio

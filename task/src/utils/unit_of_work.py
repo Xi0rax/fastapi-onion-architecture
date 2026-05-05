@@ -4,8 +4,8 @@ from abc import ABC, abstractmethod
 from types import TracebackType
 from typing import Any, Never
 
-from src.database.db import async_session_maker
-from src.repositories import TaskRepository, UserRepository
+from task.src.database.db import async_session_maker
+from task.src.repositories import TaskRepository, UserRepository
 
 
 class AbstractUnitOfWork(ABC):

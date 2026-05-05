@@ -1,6 +1,6 @@
 from unittest.mock import AsyncMock, MagicMock
 
-from src.utils.unit_of_work import UnitOfWork
+from task.src.utils.unit_of_work import UnitOfWork
 
 
 def get_mock_uow():

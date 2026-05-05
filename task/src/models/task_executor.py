@@ -4,7 +4,7 @@ from sqlalchemy import ForeignKey
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from src.models import BaseModel, UserModel, TaskModel
+from task.src.models import BaseModel, UserModel, TaskModel
 
 
 class TaskExecutorModel(BaseModel):

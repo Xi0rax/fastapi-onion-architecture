@@ -1,6 +1,6 @@
 from pydantic import BaseModel, UUID4
 
-from src.schemas.response import BaseResponse
+from task.src.schemas.response import BaseResponse
 
 
 class TaskExecutorRequest(BaseModel):

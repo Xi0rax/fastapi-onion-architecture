@@ -3,8 +3,8 @@ from dataclasses import dataclass
 from fastapi import Query
 from pydantic import UUID4, BaseModel, Field
 
-from src.schemas.filter import TypeFilter
-from src.schemas.response import BaseCreateResponse, BaseResponse
+from task.src.schemas.filter import TypeFilter
+from task.src.schemas.response import BaseCreateResponse, BaseResponse
 
 
 class UserID(BaseModel):

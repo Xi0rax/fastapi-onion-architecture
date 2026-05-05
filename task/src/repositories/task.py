@@ -2,9 +2,9 @@ from collections.abc import Sequence
 from sqlalchemy import select
 from sqlalchemy.engine import Result
 
-from src.models import TaskModel
-from src.schemas.task import TaskFilters
-from src.utils.repository import SqlAlchemyRepository
+from task.src.models import TaskModel
+from task.src.schemas.task import TaskFilters
+from task.src.utils.repository import SqlAlchemyRepository
 
 
 class TaskRepository(SqlAlchemyRepository[TaskModel]):

@@ -3,10 +3,10 @@ from dataclasses import dataclass
 from fastapi import Query
 from pydantic import BaseModel, UUID4, Field, field_validator
 
-from src.models.enums import task_status_enum
-from src.schemas.filter import TypeFilter
-from src.schemas.response import BaseCreateResponse, BaseResponse
-from src.utils.constans import TITLE_TOO_SHORT_MSG, INVALID_STATUS_MSG
+from task.src.models.enums import task_status_enum
+from task.src.schemas.filter import TypeFilter
+from task.src.schemas.response import BaseCreateResponse, BaseResponse
+from task.src.utils.constans import TITLE_TOO_SHORT_MSG, INVALID_STATUS_MSG
 
 ALLOWED_STATUSES = set(task_status_enum.enums)
 

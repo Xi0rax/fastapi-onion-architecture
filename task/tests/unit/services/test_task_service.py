@@ -3,8 +3,8 @@ from uuid import uuid4
 
 import pytest
 
-from src.api.v1.services.task import TaskService
-from tests.fixtures.db_mocks.mock_uow import get_mock_uow
+from task.src.api.v1.services.task import TaskService
+from task.tests.fixtures.db_mocks.mock_uow import get_mock_uow
 
 
 @pytest.mark.asyncio

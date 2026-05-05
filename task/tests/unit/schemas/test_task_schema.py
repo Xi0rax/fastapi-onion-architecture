@@ -1,8 +1,8 @@
 import pytest
 from pydantic import ValidationError
 
-from src.schemas.task import TaskCreateRequest
-from tests.utils import fake_uuid
+from task.src.schemas.task import TaskCreateRequest
+from task.tests.utils import fake_uuid
 
 
 def test_task_title_validation():

@@ -1,5 +1,5 @@
-from src.models import ColumnModel
-from src.utils.repository import SqlAlchemyRepository
+from task.src.models import ColumnModel
+from task.src.utils.repository import SqlAlchemyRepository
 
 
 class ColumnRepository(SqlAlchemyRepository[ColumnModel]):

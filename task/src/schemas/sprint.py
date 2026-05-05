@@ -2,7 +2,7 @@ from datetime import date
 
 from pydantic import BaseModel, UUID4, Field
 
-from src.schemas.response import BaseCreateResponse, BaseResponse
+from task.src.schemas.response import BaseCreateResponse, BaseResponse
 
 
 class SprintID(BaseModel):

@@ -1,6 +1,6 @@
 import pytest
 
-from tests.fixtures.testing_cases.task_cases import VALID_TASK_PAYLOAD
+from task.tests.fixtures.testing_cases.task_cases import VALID_TASK_PAYLOAD
 
 
 @pytest.mark.asyncio

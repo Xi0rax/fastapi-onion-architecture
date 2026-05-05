@@ -5,8 +5,8 @@ from sqlalchemy import String, Text, DateTime, ForeignKey
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from src.models import BaseModel, TaskExecutorModel, TaskWatcherModel
-from src.models.enums import task_status_enum
+from task.src.models import BaseModel, TaskExecutorModel, TaskWatcherModel
+from task.src.models.enums import task_status_enum
 
 
 class TaskModel(BaseModel):

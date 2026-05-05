@@ -1,7 +1,7 @@
 from sqlalchemy import delete
 
-from src.models import TaskWatcherModel
-from src.utils.repository import SqlAlchemyRepository
+from task.src.models import TaskWatcherModel
+from task.src.utils.repository import SqlAlchemyRepository
 
 
 class TaskWatcherRepository(SqlAlchemyRepository[TaskWatcherModel]):

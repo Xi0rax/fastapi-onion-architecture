@@ -2,9 +2,9 @@ from collections.abc import Sequence
 from sqlalchemy import select
 from sqlalchemy.engine import Result
 
-from src.models import UserModel
-from src.schemas.user import UserFilters
-from src.utils.repository import SqlAlchemyRepository
+from task.src.models import UserModel
+from task.src.schemas.user import UserFilters
+from task.src.utils.repository import SqlAlchemyRepository
 
 
 class UserRepository(SqlAlchemyRepository[UserModel]):

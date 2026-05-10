@@ -1,0 +1,29 @@
+[tool.poetry]
+name = "auth-service"
+version = "0.1.0"
+description = "Authentication service for the FastAPI onion architecture example"
+authors = ["Uoiferise <uoiferise@mail.ru>", "Xi0rax <phaule@yandex.ru>"]
+package-mode = false
+
+[tool.poetry.dependencies]
+python = "^3.11"
+fastapi = { extras = ["all"], version = "^0.108.0" }
+sqlalchemy = "^2.0.24"
+asyncpg = "^0.29.0"
+python-dotenv = "^1.0.1"
+passlib = { extras = ["bcrypt"], version = "^1.7.4" }
+pyjwt = "^2.8.0"
+aio-pika = "^9.4.0"
+
+[tool.poetry.group.test.dependencies]
+pytest = "^7.4.4"
+pytest-asyncio = "0.21.1"
+httpx = "^0.26.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.ruff]
+line-length = 120
+target-version = "py311"

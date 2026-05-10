@@ -1,0 +1,90 @@
+version: "3.8"
+
+services:
+  auth-service:
+    build:
+      context: auth_service
+    container_name: auth_service
+    restart: unless-stopped
+    ports:
+      - "8001:8001"
+    environment:
+      DB_HOST: auth_postgres
+      DB_PORT: 5432
+      DB_NAME: auth_db
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+      JWT_SECRET: change-me-in-production-change-me
+      RABBITMQ_HOST: rabbitmq
+      RABBITMQ_PORT: 5672
+      TASK_STATS_QUEUE: task_service.user_stats
+      AUTH_USER_INFO_QUEUE: auth_service.user_info
+    depends_on:
+      - auth_postgres
+      - rabbitmq
+
+  task-service:
+    build:
+      context: task_service
+    container_name: task_service
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      MODE: DEV
+      DB_HOST: task_postgres
+      DB_PORT: 5432
+      DB_NAME: dev_db
+      DB_USER: postgres
+      DB_PASS: postgres
+      RABBITMQ_HOST: rabbitmq
+      RABBITMQ_PORT: 5672
+      TASK_STATS_QUEUE: task_service.user_stats
+      AUTH_USER_INFO_QUEUE: auth_service.user_info
+    depends_on:
+      - task_postgres
+      - rabbitmq
+
+  email-service:
+    build:
+      context: email_service
+    container_name: email_service
+    restart: unless-stopped
+    ports:
+      - "8002:8002"
+    environment:
+      RABBITMQ_HOST: rabbitmq
+      RABBITMQ_PORT: 5672
+      NOTIFICATION_QUEUE: email.notifications
+    depends_on:
+      - rabbitmq
+
+  task_postgres:
+    image: postgres:15.1-alpine
+    container_name: task_postgres
+    restart: unless-stopped
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: dev_db
+
+  auth_postgres:
+    image: postgres:15.1-alpine
+    container_name: auth_postgres
+    restart: unless-stopped
+    ports:
+      - "5434:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: auth_db
+
+  rabbitmq:
+    image: rabbitmq:3.13-management-alpine
+    container_name: rabbitmq
+    restart: unless-stopped
+    ports:
+      - "5672:5672"
+      - "15672:15672"
